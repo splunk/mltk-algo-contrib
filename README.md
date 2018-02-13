@@ -59,7 +59,7 @@ First, clone the repo and symlink it to your app directory, and restart Splunk:
 
 ```bash
 git clone https://github.com/splunk/mltk-algo-contrib.git
-ln -s . $SPLUNK_HOME/etc/apps/mltk-algo-contrib
+ln -s mltk-algo-contrib $SPLUNK_HOME/etc/apps/mltk-algo-contrib
 $SPLUNK_HOME/bin/splunk restart
 ```
 
@@ -79,9 +79,9 @@ Please file issues with any information that might be needed to:
 
 # License
 
-The algorithms hosted, as well as the app itself, its licensed under the permissive Apache 2.0 license.
+The algorithms hosted, as well as the app itself, is licensed under the permissive Apache 2.0 license.
 
-**Any additions to this repository must be equally permissive in their licensing restrictions:
+**Any additions to this repository must be equally permissive in their licensing restrictions:**
  - MIT
  - BSD
- - Apache 2.0**
+ - Apache 2.0
