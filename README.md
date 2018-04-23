@@ -55,17 +55,61 @@ This repository was specifically made for your contributions!
 ## Developing
 
 To start developing, you will need to have Splunk installed. If you don't, read more [here](http://docs.splunk.com/Documentation/Splunk/latest/Installation/InstallonLinux).
-First, clone the repo and symlink it to your app directory, and restart Splunk:
+
+First, clone the repo:
 
 ```bash
 git clone https://github.com/splunk/mltk-algo-contrib.git
-ln -s mltk-algo-contrib $SPLUNK_HOME/etc/apps/mltk-algo-contrib
+```
+
+Secondly, symlink the `src` to the apps folder in Splunk:
+
+```bash
+ln -s ./src $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
+Thirdly, create a virtualenv, and install the requirements.txt:
+
+```bash
+virtualenv virtenv
+source virtenv/bin/activate
+```
+
+- Add your new algorithm(s) to `src/bin/algos`.
+- Add a new stanza to `src/default/algos.conf`
+
 ## Running Tests
 
-Lorem Ipsum
+Inside a python interpreter, import & call:
+
+```python
+from test import run_tests
+run_tests()
+```
+
+Additionally, you can run individual ad-hoc tests:
+
+```python
+# Add the MLTK to our sys.path
+from link_mltk import add_mltk
+add_mltk()
+
+import pandas as pd
+
+# Import our algorithm class
+from algos.ExampleAlgo import ExampleAlgo
+
+# Use utilties to catch common mistakes
+from test.util import check_signatures
+check_signatures(ExampleAlgo)
+
+# Try loading a DataFrame and calling fit
+df = pd.read_csv('test/data/iris.csv')
+options = {'feature_variables': ['petal_length'], 'target_variable': 'species'}
+algo_instance = ExampleAlgo(options)
+algo_instance.fit(df, options)
+```
 
 ## Pull requests
 
