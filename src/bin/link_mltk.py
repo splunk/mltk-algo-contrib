@@ -4,6 +4,7 @@ This makes it easy to import algorithms or utilities from the MLTK."""
 import os
 import sys
 
+
 def check_splunk_home(splunk_home):
     """ Check SPLUNK_HOME and raise if not set."""
     if not splunk_home:

@@ -3,6 +3,7 @@ from inspect import getargspec
 
 from base import BaseAlgo
 
+
 def check_signatures(algo):
     """Checks that the signature of algorithm's methods adhere to the API.
 
