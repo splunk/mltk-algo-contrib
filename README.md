@@ -69,46 +69,51 @@ ln -s ./src $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
-Thirdly, create a virtualenv, and install the requirements.txt:
+Thirdly, create a virtualenv (e.g. in your home directory), and install the requirements.txt:
 
 ```bash
-virtualenv virtenv
-source virtenv/bin/activate
+virtualenv $HOME/virtenv
+source $HOME/virtenv/bin/activate
 ```
 
 - Add your new algorithm(s) to `src/bin/algos`.
 - Add a new stanza to `src/default/algos.conf`
+- Add your tests to `src/bin/algos/tests/test_<your_algo>.py`
+  (See test_example_algo.py for an example.)
 
 ## Running Tests
 
-Inside a python interpreter, import & call:
+### Prerequisites
 
-```python
-from test import run_tests
-run_tests()
+1. Install *tox*:
+   * http://tox.readthedocs.io/en/latest/install.html
+2. You must also have the following environment variable set to your
+Splunk installation directory (e.g. /opt/splunk):
+   * SPLUNK_HOME
+
+### Using tox
+
+To run all tests, run the following command in the root source directory:
+
+```bash
+tox
 ```
 
-Additionally, you can run individual ad-hoc tests:
+To run a single test, you can provide the directory or a file as a parameter:
 
-```python
-# Add the MLTK to our sys.path
-from link_mltk import add_mltk
-add_mltk()
+```bash
+tox src/bin/algos/tests/
+tox src/bin/algos/tests/test_example_algo.py
+...
+```
 
-import pandas as pd
+Basically, any arguments passed to *tox* will be passed as an argument to the *pytest* command.
+To pass in options, use double dashes (--):
 
-# Import our algorithm class
-from algos.ExampleAlgo import ExampleAlgo
-
-# Use utilties to catch common mistakes
-from test.util import check_signatures
-check_signatures(ExampleAlgo)
-
-# Try loading a DataFrame and calling fit
-df = pd.read_csv('test/data/iris.csv')
-options = {'feature_variables': ['petal_length'], 'target_variable': 'species'}
-algo_instance = ExampleAlgo(options)
-algo_instance.fit(df, options)
+```bash
+tox -- -k "example"
+tox -- -x
+...
 ```
 
 ## Pull requests

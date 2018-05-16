@@ -1,11 +1,12 @@
 """ Utility methods for use in testing."""
 from inspect import getargspec
+import ConfigParser
 
 from base import BaseAlgo
 
 
-def check_signatures(algo):
-    """Checks that the signature of algorithm's methods adhere to the API.
+def assert_signatures(algo):
+    """Asserts that the signature of algorithm's methods adhere to the API.
 
     Args:
         algo (class): a custom algorithm class to check.
@@ -28,3 +29,10 @@ def assert_method_signature(algo, method, args):
         found_args = getargspec(method).args
         msg = 'Method {} has signature: {} - but should have {}'.format(method, args, found_args)
         assert found_args == args, msg
+
+
+def assert_registered(algo):
+    config = ConfigParser.RawConfigParser()
+    # File path relative to the directory that tox.ini is in.
+    config.read('src/default/algos.conf')
+    assert config.has_section(algo.__name__)
