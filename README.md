@@ -76,9 +76,9 @@ virtualenv $HOME/virtenv
 source $HOME/virtenv/bin/activate
 ```
 
-- Add your new algorithm(s) to `src/bin/algos`.
+- Add your new algorithm(s) to `src/bin/algos_contrib`.
 - Add a new stanza to `src/default/algos.conf`
-- Add your tests to `src/bin/algos/tests/test_<your_algo>.py`
+- Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
   (See test_example_algo.py for an example.)
 
 ## Running Tests
@@ -102,8 +102,8 @@ tox
 To run a single test, you can provide the directory or a file as a parameter:
 
 ```bash
-tox src/bin/algos/tests/
-tox src/bin/algos/tests/test_example_algo.py
+tox src/bin/algos_contrib/tests/
+tox src/bin/algos_contrib/tests/test_example_algo.py
 ...
 ```
 
@@ -114,6 +114,23 @@ To pass in options, use double dashes (--):
 tox -- -k "example"
 tox -- -x
 ...
+```
+
+### Using Python REPL (Interactive Interpreter)
+
+```python
+$ python   # from src/bin directory
+>>> # Add the MLTK to our sys.path
+>>> from link_mltk import add_mltk
+>>> add_mltk()
+>>>
+>>> # Import our algorithm class
+>>> from algos_contrib.ExampleAlgo import ExampleAlgo
+... (some warning from Splunk may show up)
+>>>
+>>> # Use utilities to catch common mistakes
+>>> from test.util import assert_signatures
+>>> assert_signatures(ExampleAlgo)
 ```
 
 ## Pull requests
