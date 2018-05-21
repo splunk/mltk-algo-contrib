@@ -55,17 +55,83 @@ This repository was specifically made for your contributions!
 ## Developing
 
 To start developing, you will need to have Splunk installed. If you don't, read more [here](http://docs.splunk.com/Documentation/Splunk/latest/Installation/InstallonLinux).
-First, clone the repo and symlink it to your app directory, and restart Splunk:
+
+First, clone the repo:
 
 ```bash
 git clone https://github.com/splunk/mltk-algo-contrib.git
-ln -s . $SPLUNK_HOME/etc/apps/mltk-algo-contrib
+```
+
+Secondly, symlink the `src` to the apps folder in Splunk:
+
+```bash
+ln -s ./src $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
+Thirdly, create a virtualenv (e.g. in your home directory), and install the requirements.txt:
+
+```bash
+virtualenv $HOME/virtenv
+source $HOME/virtenv/bin/activate
+```
+
+- Add your new algorithm(s) to `src/bin/algos_contrib`.
+- Add a new stanza to `src/default/algos.conf`
+- Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
+  (See test_example_algo.py for an example.)
+
 ## Running Tests
 
-Lorem Ipsum
+### Prerequisites
+
+1. Install *tox*:
+   * http://tox.readthedocs.io/en/latest/install.html
+2. You must also have the following environment variable set to your
+Splunk installation directory (e.g. /opt/splunk):
+   * SPLUNK_HOME
+
+### Using tox
+
+To run all tests, run the following command in the root source directory:
+
+```bash
+tox
+```
+
+To run a single test, you can provide the directory or a file as a parameter:
+
+```bash
+tox src/bin/algos_contrib/tests/
+tox src/bin/algos_contrib/tests/test_example_algo.py
+...
+```
+
+Basically, any arguments passed to *tox* will be passed as an argument to the *pytest* command.
+To pass in options, use double dashes (--):
+
+```bash
+tox -- -k "example"
+tox -- -x
+...
+```
+
+### Using Python REPL (Interactive Interpreter)
+
+```python
+$ python   # from src/bin directory
+>>> # Add the MLTK to our sys.path
+>>> from link_mltk import add_mltk
+>>> add_mltk()
+>>>
+>>> # Import our algorithm class
+>>> from algos_contrib.ExampleAlgo import ExampleAlgo
+... (some warning from Splunk may show up)
+>>>
+>>> # Use utilities to catch common mistakes
+>>> from test.util import assert_signatures
+>>> assert_signatures(ExampleAlgo)
+```
 
 ## Pull requests
 
@@ -79,9 +145,9 @@ Please file issues with any information that might be needed to:
 
 # License
 
-The algorithms hosted, as well as the app itself, its licensed under the permissive Apache 2.0 license.
+The algorithms hosted, as well as the app itself, is licensed under the permissive Apache 2.0 license.
 
-**Any additions to this repository must be equally permissive in their licensing restrictions:
+**Any additions to this repository must be equally permissive in their licensing restrictions:**
  - MIT
  - BSD
- - Apache 2.0**
+ - Apache 2.0
