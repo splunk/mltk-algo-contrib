@@ -33,3 +33,8 @@ export = system
 [viewstates]
 access = read : [ * ], write : [ * ]
 export = system
+
+### ALGOS: Custom ML-SPL algorithms
+
+[algos]
+export = system
