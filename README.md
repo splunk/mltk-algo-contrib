@@ -87,7 +87,19 @@ source $HOME/virtenv/bin/activate
 
 1. Install *tox*:
    * http://tox.readthedocs.io/en/latest/install.html
-2. You must also have the following environment variable set to your
+   ```bash
+   pip install tox
+   ```
+2. Install tox-pip-extensions
+   * https://github.com/tox-dev/tox-pip-extensions
+   ```bash
+   pip install tox-pip-extensions
+   ```
+   * **NOTE**: You only need this if you do not want to
+   recreate the virtualenv(s) manually with `tox -r`
+   everytime you update requirements*.txt file, but
+   this is recommended for convenience.
+3. You must also have the following environment variable set to your
 Splunk installation directory (e.g. /opt/splunk):
    * SPLUNK_HOME
 
@@ -111,8 +123,9 @@ Basically, any arguments passed to *tox* will be passed as an argument to the *p
 To pass in options, use double dashes (--):
 
 ```bash
-tox -- -k "example"
-tox -- -x
+tox -- -k "example"     # Run tests that has keyword 'example'
+tox -- -x               # Stop after the first failure
+tox -- -s               # Show stdout/stderr (i.e. disable capturing)
 ...
 ```
 
