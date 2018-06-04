@@ -1,13 +1,7 @@
 from algos_contrib.ExampleAlgo import ExampleAlgo
-from test.util import (
-    assert_registered,
-    assert_signatures,
-)
+from test.contrib_util import AlgoTestUtils
 
 
-def test_signatures():
-    assert_signatures(ExampleAlgo)
+def test_algo():
+    AlgoTestUtils.assert_algo_basic(ExampleAlgo, serializable=False)
 
-
-def test_registration():
-    assert_registered(ExampleAlgo)
