@@ -56,37 +56,35 @@ This repository was specifically made for your contributions!
 
 To start developing, you will need to have Splunk installed. If you don't, read more [here](http://docs.splunk.com/Documentation/Splunk/latest/Installation/InstallonLinux).
 
-First, clone the repo:
+1. clone the repo and cd into the directory:
 
 ```bash
 git clone https://github.com/splunk/mltk-algo-contrib.git
+cd mltk-algo-contrib
 ```
 
-Secondly, symlink the `src` to the apps folder in Splunk:
+2. symlink the `src` to the apps folder in Splunk and restart splunkd:
 
 ```bash
 ln -s "$(pwd)/src" $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
-Thirdly, create a virtualenv (e.g. in your home directory), and install the requirements.txt:
-
-```bash
-virtualenv $HOME/virtenv
-source $HOME/virtenv/bin/activate
-```
-
-- Add your new algorithm(s) to `src/bin/algos_contrib`.
+3. Add your new algorithm(s) to `src/bin/algos_contrib`.
   (See ExampleAlgo.py for an example.)
-- Add a new stanza to `src/default/algos.conf`
+  
+4. Add a new stanza to `src/default/algos.conf`
+
 ```bash
-[&lt;your_algo&gt;]
+[<your_algo>]
 package=algos_contrib
 ```
-NOTE: Due to the way configuration file layering works in Splunk,
-    the package name must be overridden in each section, and not
-    in the _default_ section.
-- Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
+
+  * **NOTE**: Due to the way configuration file layering works in Splunk,
+  the package name must be overridden in each section, and not
+  in the _default_ section.
+    
+5. Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
   (See test_example_algo.py for an example.)
 
 ## Running Tests
@@ -98,7 +96,7 @@ NOTE: Due to the way configuration file layering works in Splunk,
    ```bash
    pip install tox
    ```
-2. Install tox-pip-extensions
+2. Install *tox-pip-extensions*:
    * https://github.com/tox-dev/tox-pip-extensions
    ```bash
    pip install tox-pip-extensions
@@ -157,7 +155,7 @@ $ python   # from src/bin directory
 ### Package/File Naming
 
 Files and packages under _test_ directory should avoid having names
-that conflict with files or directories directly under
+that conflict with files or directories directly under:
 ```bash
 $SPLUNK_HOME/etc/apps/Splunk_ML_Toolkit/bin
 ```
