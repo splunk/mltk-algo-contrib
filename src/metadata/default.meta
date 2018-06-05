@@ -33,3 +33,7 @@ export = system
 [viewstates]
 access = read : [ * ], write : [ * ]
 export = system
+
+
+[algos]
+export = system

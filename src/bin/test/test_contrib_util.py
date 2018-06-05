@@ -43,27 +43,33 @@ def serializable_algo_cls():
 
 mock_algo_conf = """
 [MinimalAlgo]
+package=algos_contrib
 """
 
 
-def test_assert_method_signature(min_algo_cls):
+mock_algo_conf_no_package = """
+[MinimalAlgo]
+"""
+
+
+def test_method_signature(min_algo_cls):
     AlgoTestUtils.assert_method_signature(min_algo_cls, 'fit', ['self', 'df', 'options'])
 
 
 @mock.patch.object(AlgoTestUtils, 'get_algos_conf_fp', return_value=io.BytesIO(mock_algo_conf))
-def test_assert_registered(mock_get_algos_conf_fp, min_algo_cls):
+def test_registered(mock_get_algos_conf_fp, min_algo_cls):
     AlgoTestUtils.assert_registered(min_algo_cls)
 
 
-def test_assert_serializable(serializable_algo_cls):
+def test_serializable(serializable_algo_cls):
     AlgoTestUtils.assert_serializable(serializable_algo_cls, input_df=pd.DataFrame({}), options={})
 
 
-def test_assert_base_algo_method_signatures_default_methods(min_algo_cls):
+def test_base_algo_method_signatures_default_methods(min_algo_cls):
     AlgoTestUtils.assert_base_algo_method_signatures(min_algo_cls)
 
 
-def test_assert_base_algo_method_signatures_all_methods(min_algo_cls):
+def test_base_algo_method_signatures_all_methods(min_algo_cls):
     AlgoTestUtils.assert_base_algo_method_signatures(min_algo_cls, required_methods=[
         '__init__',
         'fit',
@@ -73,7 +79,7 @@ def test_assert_base_algo_method_signatures_all_methods(min_algo_cls):
     ])
 
 
-def test_assert_base_algo_method_signatures_extra_methods(min_algo_cls):
+def test_base_algo_method_signatures_extra_methods(min_algo_cls):
     with pytest.raises(AssertionError) as e:
         extra_args = [
             'extra1',
@@ -90,7 +96,7 @@ def test_assert_base_algo_method_signatures_extra_methods(min_algo_cls):
 
 
 @mock.patch.object(AlgoTestUtils, 'get_algos_conf_fp', return_value=io.BytesIO(mock_algo_conf))
-def test_assert_algo_basic(mock_get_algos_conf_fp, min_algo_cls):
+def test_algo_basic(mock_get_algos_conf_fp, min_algo_cls):
     AlgoTestUtils.assert_algo_basic(min_algo_cls, serializable=False)
 
 
@@ -103,14 +109,14 @@ def test_no_base_algo():
     assert e.match('must inherit from BaseAlgo')
 
 
-def test_assert_method_signature_non_existent(min_algo_cls):
+def test_method_signature_non_existent(min_algo_cls):
     bad_method = 'foot'
     with pytest.raises(AssertionError) as e:
         AlgoTestUtils.assert_method_signature(min_algo_cls, bad_method, ['self', 'df', 'options'])
     e.match("{}.*does not exist".format(bad_method))
 
 
-def test_assert_method_signature_not_callable(min_algo_cls):
+def test_method_signature_not_callable(min_algo_cls):
     bad_method = 'fit'
 
     # Make fit a property.
@@ -122,7 +128,7 @@ def test_assert_method_signature_not_callable(min_algo_cls):
 
 
 @mock.patch.object(AlgoTestUtils, 'get_algos_conf_fp', return_value=io.BytesIO(mock_algo_conf))
-def test_assert_unregistered(mock_get_algos_conf_fp):
+def test_unregistered(mock_get_algos_conf_fp):
     class UnregisteredAlgo(BaseAlgo):
         pass
 
@@ -131,7 +137,14 @@ def test_assert_unregistered(mock_get_algos_conf_fp):
     assert e.match('{}.*not registered'.format(UnregisteredAlgo.__name__))
 
 
-def test_assert_not_serializable(min_algo_cls):
+@mock.patch.object(AlgoTestUtils, 'get_algos_conf_fp', return_value=io.BytesIO(mock_algo_conf_no_package))
+def test_registered_with_missing_package_option(mock_get_algos_conf_fp, min_algo_cls):
+    with pytest.raises(AssertionError) as e:
+        AlgoTestUtils.assert_registered(min_algo_cls)
+    assert e.match('{}.*must override.*package'.format(min_algo_cls.__name__))
+
+
+def test_not_serializable(min_algo_cls):
     with pytest.raises(MLSPLNotImplementedError) as e:
         AlgoTestUtils.assert_serializable(min_algo_cls, input_df=pd.DataFrame({}), options={})
     assert e.match('does not support saving')

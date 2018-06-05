@@ -65,7 +65,7 @@ git clone https://github.com/splunk/mltk-algo-contrib.git
 Secondly, symlink the `src` to the apps folder in Splunk:
 
 ```bash
-ln -s ./src $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
+ln -s "$(pwd)/src" $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
@@ -77,7 +77,15 @@ source $HOME/virtenv/bin/activate
 ```
 
 - Add your new algorithm(s) to `src/bin/algos_contrib`.
+  (See ExampleAlgo.py for an example.)
 - Add a new stanza to `src/default/algos.conf`
+```bash
+[&lt;your_algo&gt;]
+package=algos_contrib
+```
+NOTE: Due to the way configuration file layering works in Splunk,
+    the package name must be overridden in each section, and not
+    in the _default_ section.
 - Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
   (See test_example_algo.py for an example.)
 
@@ -142,8 +150,16 @@ $ python   # from src/bin directory
 ... (some warning from Splunk may show up)
 >>>
 >>> # Use utilities to catch common mistakes
->>> from test.util import assert_signatures
->>> assert_signatures(ExampleAlgo)
+>>> from test.contrib_util import AlgoTestUtils
+>>> AlgoTestUtils.assert_algo_basic(ExampleAlgo, serializable=False)
+```
+
+### Package/File Naming
+
+Files and packages under _test_ directory should avoid having names
+that conflict with files or directories directly under
+```bash
+$SPLUNK_HOME/etc/apps/Splunk_ML_Toolkit/bin
 ```
 
 ## Pull requests

@@ -1,11 +1,16 @@
 """ Utility methods for use in testing."""
 import ConfigParser
 import json
+import os
 from inspect import getargspec
 
 import pandas as pd
+
 from base import BaseAlgo
 from codec import MLSPLDecoder, MLSPLEncoder
+
+
+PACKAGE_NAME='algos_contrib'
 
 
 class AlgoTestUtils(object):
@@ -53,7 +58,14 @@ class AlgoTestUtils(object):
         with cls.get_algos_conf_fp() as f:
             config.readfp(f)
         algo_name = algo_cls.__name__
-        assert config.has_section(algo_name), "'{}' not registered in algos.conf".format(algo_name)
+        try:
+            package_name = config.get(algo_name, 'package')
+        except ConfigParser.NoSectionError:
+            assert False, "'{}' not registered in algos.conf".format(algo_name)
+        except ConfigParser.NoOptionError:
+            assert False, "'{}' must override 'package' option in algos.conf".format(algo_name)
+
+        assert package_name == PACKAGE_NAME, "The package name must be '{}'".format(PACKAGE_NAME)
 
     @staticmethod
     def assert_serializable(algo_cls, input_df, options):
@@ -164,7 +176,7 @@ class AlgoTestUtils(object):
         Returns:
             (File): algos.conf file pointer
         """
-        # File path relative to the directory that tox.ini is in.
-        return open('src/default/algos.conf')
+        algos_file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'default', 'algos.conf')
+        return open(algos_file_path)
 
 
