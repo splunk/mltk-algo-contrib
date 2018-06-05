@@ -56,29 +56,35 @@ This repository was specifically made for your contributions!
 
 To start developing, you will need to have Splunk installed. If you don't, read more [here](http://docs.splunk.com/Documentation/Splunk/latest/Installation/InstallonLinux).
 
-First, clone the repo:
+1. clone the repo and cd into the directory:
 
 ```bash
 git clone https://github.com/splunk/mltk-algo-contrib.git
+cd mltk-algo-contrib
 ```
 
-Secondly, symlink the `src` to the apps folder in Splunk:
+2. symlink the `src` to the apps folder in Splunk and restart splunkd:
 
 ```bash
-ln -s ./src $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
+ln -s "$(pwd)/src" $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
 
-Thirdly, create a virtualenv (e.g. in your home directory), and install the requirements.txt:
+3. Add your new algorithm(s) to `src/bin/algos_contrib`.
+  (See ExampleAlgo.py for an example.)
+  
+4. Add a new stanza to `src/default/algos.conf`
 
 ```bash
-virtualenv $HOME/virtenv
-source $HOME/virtenv/bin/activate
+[<your_algo>]
+package=algos_contrib
 ```
 
-- Add your new algorithm(s) to `src/bin/algos_contrib`.
-- Add a new stanza to `src/default/algos.conf`
-- Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
+  * **NOTE**: Due to the way configuration file layering works in Splunk,
+  the package name must be overridden in each section, and not
+  in the _default_ section.
+    
+5. Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
   (See test_example_algo.py for an example.)
 
 ## Running Tests
@@ -87,7 +93,19 @@ source $HOME/virtenv/bin/activate
 
 1. Install *tox*:
    * http://tox.readthedocs.io/en/latest/install.html
-2. You must also have the following environment variable set to your
+   ```bash
+   pip install tox
+   ```
+2. Install *tox-pip-extensions*:
+   * https://github.com/tox-dev/tox-pip-extensions
+   ```bash
+   pip install tox-pip-extensions
+   ```
+   * **NOTE**: You only need this if you do not want to
+   recreate the virtualenv(s) manually with `tox -r`
+   everytime you update requirements*.txt file, but
+   this is recommended for convenience.
+3. You must also have the following environment variable set to your
 Splunk installation directory (e.g. /opt/splunk):
    * SPLUNK_HOME
 
@@ -111,8 +129,9 @@ Basically, any arguments passed to *tox* will be passed as an argument to the *p
 To pass in options, use double dashes (--):
 
 ```bash
-tox -- -k "example"
-tox -- -x
+tox -- -k "example"     # Run tests that has keyword 'example'
+tox -- -x               # Stop after the first failure
+tox -- -s               # Show stdout/stderr (i.e. disable capturing)
 ...
 ```
 
@@ -129,8 +148,16 @@ $ python   # from src/bin directory
 ... (some warning from Splunk may show up)
 >>>
 >>> # Use utilities to catch common mistakes
->>> from test.util import assert_signatures
->>> assert_signatures(ExampleAlgo)
+>>> from test.contrib_util import AlgoTestUtils
+>>> AlgoTestUtils.assert_algo_basic(ExampleAlgo, serializable=False)
+```
+
+### Package/File Naming
+
+Files and packages under _test_ directory should avoid having names
+that conflict with files or directories directly under:
+```bash
+$SPLUNK_HOME/etc/apps/Splunk_ML_Toolkit/bin
 ```
 
 ## Pull requests
