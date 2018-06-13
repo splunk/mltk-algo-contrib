@@ -2,7 +2,14 @@
 
 This repo contains custom algorithms for use with the [Splunk Machine Learning Toolkit](https://splunkbase.splunk.com/app/2890/). The repo itself is also a Splunk app.
 Custom algorithms can be added to the Splunk Machine Learning toolkit by adhering to the [ML-SPL API](http://docs.splunk.com/Documentation/MLApp/latest/API/Introduction).
-The API is a thin wrapper around machine learning estimators provided by libraries such as [scikit-learn](scikit-learn.org) or [statsmodels](http://www.statsmodels.org/).
+The API is a thin wrapper around machine learning estimators provided by libraries such as:
+* [scikit-learn](scikit-learn.org)
+* [statsmodels](http://www.statsmodels.org/).
+* [scipy](https://www.scipy.org)
+
+and custom algorithms.
+
+Note that this repo is a collection of custom *algorithms* only, and not any libraries. Any libraries required should only be added to live environments manually and not to this repo.
 
 A comprehensive guide to using the ML-SPL API can be found [here](http://docs.splunk.com/Documentation/MLApp/latest/API/Introduction).
 
@@ -50,7 +57,7 @@ To use the custom algorithms contained in this app, you must also have installed
 
 # Contributing
 
-This repository was specifically made for your contributions!
+This repository was specifically made for your contributions! See [Contributing](https://github.com/splunk/mltk-algo-contrib/blob/master/CONTRIBUTING.md) for more details.
 
 ## Developing
 
