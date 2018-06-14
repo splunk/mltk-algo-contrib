@@ -79,7 +79,8 @@ OR
 You will need to install tox. See [Test Prerequisites](#prereq)
 
 ```bash
-tox -e package
+tox -e package-macos        # if on Mac
+tox -e package-linux        # if on Linux
 ```
 
   * The resulting gzipped tarball will be in the `target` directory (e.g. target/SA_mltk_contrib_app.tgz).
