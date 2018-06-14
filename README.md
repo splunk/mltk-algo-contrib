@@ -9,7 +9,7 @@ The API is a thin wrapper around machine learning estimators provided by librari
 
 and custom algorithms.
 
-Note that this repo is a collection of custom *algorithms* only, and not any libraries. Any libraries required should only be added to live environments manually and not to this repo.
+Note that this repo is a collection of custom *algorithms* only, and not any libraries. Any libraries required should only be added to live environments manually and not to this repo. Also, Splunk is not responsible for any math or logic in the algorithms being correct.
 
 A comprehensive guide to using the ML-SPL API can be found [here](http://docs.splunk.com/Documentation/MLApp/latest/API/Introduction).
 
@@ -55,6 +55,46 @@ To use the custom algorithms contained in this app, you must also have installed
     - [Windows64](https://splunkbase.splunk.com/app/2883/)
     - [macOS](https://splunkbase.splunk.com/app/2881/)
 
+# Deploying
+
+To use the custom algorithms in this repository, you must deploy them as a Splunk app.
+
+There are two ways to do this.
+
+### Manual copying
+ You can simple copy the following directories under src:
+  * bin
+  * default
+  * metadata
+
+  under:
+  * ${SPLUNK_HOME}/etc/apps/SA_mltk_contrib_app (you will need to create the directory first):
+
+OR
+
+### Build and install
+
+#### 1. Build the app:
+
+You will need to install tox. See [Test Prerequisites](#prereq)
+
+```bash
+tox -e package
+```
+
+  * The resulting gzipped tarball will be in the `target` directory (e.g. target/SA_mltk_contrib_app.tgz).
+    * The location of the gzipped tarball can be overridden by `BUILD_DIR` environment variable.
+  * The default app name will be `SA_mltk_contrib_app`, but this can be overridden by the `APP_NAME` environment variable.
+
+* **NOTE**: You can run `tox -e clean` to remove the `target` directory.
+
+#### 2. Install the tarball:
+
+  * You can do one of the followings with the tarball from step 1:
+    * Manually untar it in `${SPLUNK_HOME}/etc/apps` directory
+    * Install it using the GUI:
+      * https://docs.splunk.com/Documentation/AddOns/released/Overview/Singleserverinstall
+
 # Contributing
 
 This repository was specifically made for your contributions! See [Contributing](https://github.com/splunk/mltk-algo-contrib/blob/master/CONTRIBUTING.md) for more details.
@@ -70,15 +110,16 @@ git clone https://github.com/splunk/mltk-algo-contrib.git
 cd mltk-algo-contrib
 ```
 
-2. symlink the `src` to the apps folder in Splunk and restart splunkd:
+2. symlink the `src` directory to the apps folder in Splunk and restart splunkd:
 
 ```bash
 ln -s "$(pwd)/src" $SPLUNK_HOME/etc/apps/SA_mltk_contrib_app
 $SPLUNK_HOME/bin/splunk restart
 ```
+  * _This will eliminate the need to deploy the app to test changes._
 
 3. Add your new algorithm(s) to `src/bin/algos_contrib`.
-  (See ExampleAlgo.py for an example.)
+  (See SVR.py for an example.)
   
 4. Add a new stanza to `src/default/algos.conf`
 
@@ -92,10 +133,11 @@ package=algos_contrib
   in the _default_ section.
     
 5. Add your tests to `src/bin/algos_contrib/tests/test_<your_algo>.py`
-  (See test_example_algo.py for an example.)
+  (See test_svr.py for an example.)
 
 ## Running Tests
 
+<a name=prereq></a>
 ### Prerequisites
 
 1. Install *tox*:
@@ -103,6 +145,7 @@ package=algos_contrib
    ```bash
    pip install tox
    ```
+
 2. Install *tox-pip-extensions*:
    * https://github.com/tox-dev/tox-pip-extensions
    ```bash
@@ -112,6 +155,7 @@ package=algos_contrib
    recreate the virtualenv(s) manually with `tox -r`
    everytime you update requirements*.txt file, but
    this is recommended for convenience.
+
 3. You must also have the following environment variable set to your
 Splunk installation directory (e.g. /opt/splunk):
    * SPLUNK_HOME
