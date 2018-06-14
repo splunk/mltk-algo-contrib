@@ -62,12 +62,13 @@ To use the custom algorithms in this repository, you must deploy them as a Splun
 There are two ways to do this.
 
 ### Manual copying
- You can simple copy the following directories under src:
+
+You can simple copy the following directories under src:
   * bin
   * default
   * metadata
 
-  under:
+to:
   * ${SPLUNK_HOME}/etc/apps/SA_mltk_contrib_app (you will need to create the directory first):
 
 OR
