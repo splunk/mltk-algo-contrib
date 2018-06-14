@@ -9,7 +9,8 @@ The API is a thin wrapper around machine learning estimators provided by librari
 
 and custom algorithms.
 
-Note that this repo is a collection of custom *algorithms* only, and not any libraries. Any libraries required should only be added to live environments manually and not to this repo. Also, Splunk is not responsible for any math or logic in the algorithms being correct.
+Note that this repo is a collection of custom *algorithms* only, and not any libraries. Any libraries required
+should only be added to live environments manually and not to this repo.
 
 A comprehensive guide to using the ML-SPL API can be found [here](http://docs.splunk.com/Documentation/MLApp/latest/API/Introduction).
 
@@ -54,6 +55,11 @@ To use the custom algorithms contained in this app, you must also have installed
     - [Linux32](https://splunkbase.splunk.com/app/2884/)
     - [Windows64](https://splunkbase.splunk.com/app/2883/)
     - [macOS](https://splunkbase.splunk.com/app/2881/)
+
+# Usage
+This repository is contains public contributions and Splunk is not responsible for guaranteeing
+the correctness or validity of the algorithms. Splunk is in no way responsible for the vetting of
+the contents of contributed algorithms.
 
 # Deploying
 
