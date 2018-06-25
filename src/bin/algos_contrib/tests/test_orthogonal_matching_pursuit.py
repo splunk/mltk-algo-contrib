@@ -1,7 +1,8 @@
+import pandas as pd
 from algos_contrib.OrthogonalMatchingPursuit import OrthogonalMatchingPursuit
 from test.contrib_util import AlgoTestUtils
 
-import pandas as pd
+
 
 
 def test_algo():
