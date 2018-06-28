@@ -142,7 +142,7 @@ class AlgoTestUtils(object):
             cls.assert_method_signature(algo_cls, required_method, method_args_map[required_method])
 
     @classmethod
-    def assert_algo_basic(cls, algo_cls, input_df=None, options=None, serializable=True):
+    def assert_algo_basic(cls, algo_cls, required_methods=None, input_df=None, options=None, serializable=True):
         """
         Assert signatures of methods, registration, and serialization
 
@@ -158,7 +158,7 @@ class AlgoTestUtils(object):
         Raises:
             AssertionError
         """
-        cls.assert_base_algo_method_signatures(algo_cls)
+        cls.assert_base_algo_method_signatures(algo_cls, required_methods)
         cls.assert_registered(algo_cls)
         if serializable:
             # The input and options are required for serializability test.
