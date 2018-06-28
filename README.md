@@ -233,7 +233,7 @@ Please file issues with any information that might be needed to:
 
 The algorithms hosted, as well as the app itself, is licensed under the permissive Apache 2.0 license.
 
-**Any additions to this repository must under one of these licenses:**
+**Any additions to this repository must be under one of these licenses:**
  - MIT
  - BSD
  - Apache 2.0
