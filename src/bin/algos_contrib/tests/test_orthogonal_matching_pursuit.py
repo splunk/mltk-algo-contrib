@@ -15,4 +15,12 @@ def test_algo():
         'target_variable': ['a'],
         'feature_variables': ['b', 'c'],
     }
-    AlgoTestUtils.assert_algo_basic(OrthogonalMatchingPursuit, input_df, options)
+    required_methods = (
+        '__init__',
+        'fit',
+        'partial_fit',
+        'apply',
+        'summary',
+        'register_codecs',
+    )
+    AlgoTestUtils.assert_algo_basic(OrthogonalMatchingPursuit, required_methods ,  input_df, options)

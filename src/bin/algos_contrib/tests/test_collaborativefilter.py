@@ -1,4 +1,4 @@
-from algos_contrib.SavgolFilter import CollaborativeFilter
+from algos_contrib.CollaborativeFilter import CollaborativeFilter
 from test.contrib_util import AlgoTestUtils
 
 
