@@ -52,6 +52,7 @@ class CustomDecisionTreeClassifier(ClassifierMixin, BaseAlgo):
                 raise RuntimeError('Invalid value for option class_weight: "%s"' % out_params['class_weight'])
 
         self.estimator = _DecisionTreeClassifier(**out_params)
+
     def summary(self, options):
         if 'args' in options:
             raise RuntimeError('Summarization does not take values other than parameters')

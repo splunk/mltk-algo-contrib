@@ -2,9 +2,6 @@ import pandas as pd
 from algos_contrib.CustomDecisionTreeClassifier import CustomDecisionTreeClassifier
 from test.contrib_util import AlgoTestUtils
 
-
-
-
 def test_algo():
     input_df = pd.DataFrame({
         'a': [1, 2, 3],
@@ -23,3 +20,4 @@ def test_algo():
         'register_codecs',
     )
     AlgoTestUtils.assert_algo_basic(CustomDecisionTreeClassifier, required_methods ,  input_df, options)
+    
