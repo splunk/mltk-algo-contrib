@@ -60,6 +60,6 @@ class CustomDecisionTreeClassifier(ClassifierMixin, BaseAlgo):
     @staticmethod
     def register_codecs():
         from codec.codecs import SimpleObjectCodec, TreeCodec
-        codecs_manager.add_codec('algos_contrib.CustomDecisionTreeClassifier', 'CustomDecisionTreeClassifier', SimpleObjectCodec)
+        codecs_manager.add_codec('algos.CustomDecisionTreeClassifier', 'CustomDecisionTreeClassifier', SimpleObjectCodec)
         codecs_manager.add_codec('sklearn.tree.tree', 'DecisionTreeClassifier', SimpleObjectCodec)
         codecs_manager.add_codec('sklearn.tree._tree', 'Tree', TreeCodec)
