@@ -19,6 +19,10 @@ class TSNE(TransformerMixin, BaseAlgo):
             aliases={'k': 'n_components'}
         )
 
+        if out_params['n_components'] < 1:
+            msg = 'Invalid value for k: k must be greater than or equal to 1, but found k="{}".'
+            raise RuntimeError(msg.format(out_params['n_components']))
+
         if 'n_iter' not in out_params:
             out_params.setdefault('n_iter', 200)
 
@@ -76,4 +80,4 @@ class TSNE(TransformerMixin, BaseAlgo):
     def register_codecs():
         from codec.codecs import SimpleObjectCodec
         codecs_manager.add_codec('algos_contrib.TSNE', 'TSNE', SimpleObjectCodec)
-        codecs_manager.add_codec('sklearn.manifold.TSNE', 'TSNE', SimpleObjectCodec)
+        codecs_manager.add_codec('sklearn.manifold.t_sne', 'TSNE', SimpleObjectCodec)
