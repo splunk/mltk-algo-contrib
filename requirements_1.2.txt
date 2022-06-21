@@ -2,7 +2,7 @@ attrs==17.4.0
 funcsigs==1.0.2
 mock==2.0.0
 more-itertools==4.1.0
-numpy==1.10.4
+numpy==1.22.0
 pandas==0.17.1
 pluggy==0.6.0
 psutil==3.4.2
